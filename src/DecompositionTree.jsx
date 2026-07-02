@@ -38,13 +38,14 @@ const LEAVES = [
   { name: "UNITED ARAB EMIRATES", bucket: "Rest of ICR", actual: 20, le: 20, fyle: 24, proj: 24 },
   { name: "HONG KONG", bucket: "Rest of ICR", actual: 18, le: 18, fyle: 22, proj: 22 },
   { name: "RUSSIA", bucket: "Rest of ICR", actual: 25, le: 25, fyle: 30, proj: 10 },
+  { name: "TURKEY", bucket: "TR", actual: 32, le: 32, fyle: 38, proj: 38 },
 ];
 
-const BUCKET_ORDER = ["US", "DE", "FR", "SP", "IT", "UKI", "CA", "JP", "CN", "Rest of ACE", "Rest of ICR"];
+const BUCKET_ORDER = ["US", "DE", "FR", "SP", "IT", "UKI", "CA", "JP", "CN", "TR", "Rest of ACE", "Rest of ICR"];
 
 const DOT_COLORS = {
   US: "#f59e0b", DE: "#3b82f6", FR: "#ec4899", SP: "#f97316", IT: "#14b8a6",
-  UKI: "#8b5cf6", CA: "#ef4444", JP: "#ec4899", CN: "#eab308",
+  UKI: "#8b5cf6", CA: "#ef4444", JP: "#ec4899", CN: "#eab308", TR: "#84cc16",
   "Rest of ACE": "#22c55e", "Rest of ICR": "#a855f7",
   HIV: "#0ea5e9", "ONC ST": "#64748b",
   BIKTARVY: "#0284c7", DESCOVY: "#06b6d4", TRODELVY: "#6366f1", TIBSOVO: "#a855f7",
