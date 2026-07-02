@@ -195,19 +195,9 @@ function renderTree(node, depth, path, expanded, toggle, out) {
   }
 }
 
-// Generic depth-based expand collector — works for either tree shape
-function collectPathsUpToDepth(node, path, depth, maxDepth, out) {
-  if (depth > maxDepth) return;
-  out.add(path);
-  if (node.children) node.children.forEach((c) => collectPathsUpToDepth(c, path + "/" + c.name, depth + 1, maxDepth, out));
-}
-
-const PRESET_DEPTH = { Country: 0, "+TA": 1, "+Brand": 2, All: 99 };
-
 export default function DecompositionTree() {
   const [geoMode, setGeoMode] = useState(true);
   const [expanded, setExpanded] = useState(new Set(["Worldwide"]));
-  const [depthPreset, setDepthPreset] = useState("Country");
 
   const activeTree = geoMode ? GEO_TREE : TA_TREE;
 
@@ -221,15 +211,7 @@ export default function DecompositionTree() {
 
   function switchMode(isGeo) {
     setGeoMode(isGeo);
-    setDepthPreset("Country");
     setExpanded(new Set(["Worldwide"]));
-  }
-
-  function applyPreset(preset) {
-    setDepthPreset(preset);
-    const out = new Set();
-    collectPathsUpToDepth(activeTree, "Worldwide", 0, PRESET_DEPTH[preset], out);
-    setExpanded(out);
   }
 
   const rows = [];
@@ -245,10 +227,19 @@ export default function DecompositionTree() {
             <span className="ml-3 text-xs font-semibold text-gray-400 tracking-wide">YEAR</span>
             <div className="border border-gray-300 rounded-md px-3 py-1 text-sm font-medium text-gray-700 bg-white">2026 ▾</div>
           </div>
-          <div className="flex items-center gap-2">
-            <button onClick={() => switchMode(true)} className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-colors ${geoMode ? "bg-slate-900 text-white" : "bg-gray-100 text-gray-500"}`}>Geo</button>
-            <button onClick={() => switchMode(false)} className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-colors ${!geoMode ? "bg-slate-900 text-white" : "bg-gray-100 text-gray-500"}`}>TA</button>
-          </div>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={!geoMode}
+            onClick={() => switchMode(!geoMode)}
+            className="relative inline-flex items-center w-40 h-11 rounded-full bg-slate-900 shadow-inner transition-colors"
+          >
+            <span
+              className={`absolute top-1 bottom-1 w-[76px] rounded-full bg-white shadow transition-transform duration-200 ease-out ${geoMode ? "translate-x-1" : "translate-x-[79px]"}`}
+            />
+            <span className={`relative z-10 w-1/2 text-center text-sm font-bold transition-colors ${geoMode ? "text-slate-900" : "text-white"}`}>Geo</span>
+            <span className={`relative z-10 w-1/2 text-center text-sm font-bold transition-colors ${!geoMode ? "text-slate-900" : "text-white"}`}>TA</span>
+          </button>
         </div>
 
         <p className="text-xs text-gray-400 mt-2">
@@ -259,12 +250,6 @@ export default function DecompositionTree() {
             ? "Hierarchy: Worldwide → Country → Therapeutic Area → Brand"
             : "Hierarchy: Worldwide → Therapeutic Area → Brand → Country (+ Rest of ACE / Rest of ICR)"}
         </p>
-
-        <div className="flex justify-end gap-2 mt-3">
-          {["Country", "+TA", "+Brand", "All"].map((p) => (
-            <button key={p} onClick={() => applyPreset(p)} className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-colors ${depthPreset === p ? "bg-slate-900 text-white" : "bg-gray-100 text-gray-500"}`}>{p}</button>
-          ))}
-        </div>
       </div>
 
       <div className="flex items-center px-6 py-2 border-y border-gray-100 bg-gray-50/60">
